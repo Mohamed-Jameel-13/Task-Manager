@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Create required tmp directories for Vercel
+        if (env('APP_ENV') === 'production') {
+            $dirs = ['/tmp/cache', '/tmp/views'];
+            foreach ($dirs as $dir) {
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0755, true);
+                }
+            }
+        }
     }
 }
