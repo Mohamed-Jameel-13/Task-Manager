@@ -1,32 +1,4 @@
-# Git and versioning
-.git
-.gitignore
-.gitattributes
-
-# Development files
-.editorconfig
-.phpunit.result.cache
-phpunit.xml
-README.md
-CHANGELOG.md
-.vscode
-.idea
-docker*
-tests
-
-# Laravel framework directories that are rebuilt on deploy
+/vendor
 /node_modules
-.env
-.env.example
-
-# Caches that are rebuilt on deploy
-/bootstrap/cache/*
-/storage/framework/cache/*
-/storage/framework/sessions/*
-/storage/framework/testing/*
-/storage/framework/views/*
-/storage/logs/*
-
-# Already built assets
-/public/build
-/public/hot
+/.git
+/.idea

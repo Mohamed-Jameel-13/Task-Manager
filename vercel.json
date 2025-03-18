@@ -1,26 +1,31 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.php": {
-      "runtime": "vercel-php@0.6.0"
-    }
-  },
-  "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh",
-  "outputDirectory": "public",
-  "routes": [
+  "framework": "laravel",
+  "builds": [
     {
-      "src": "/(css|js|build|images|fonts|favicon.ico|robots.txt)/(.*)",
-      "dest": "/public/$1/$2"
+      "src": "api/index.php",
+      "use": "vercel-php@0.6.0"
     },
     {
-      "src": "/build/(.*)",
-      "dest": "/public/build/$1"
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(css|js|images|fonts|assets|build)/(.*)",
+      "dest": "public/$1/$2"
+    },
+    {
+      "src": "/(.*)\\.(.+)",
+      "dest": "public/$1.$2"
     },
     {
       "src": "/(.*)",
       "dest": "/api/index.php"
     }
   ],
+<<<<<<< HEAD
   "env": {
     "APP_NAME": "Task Manager",
     "APP_ENV": "production",
@@ -46,4 +51,7 @@
     "type": "laravel",
     "version": "10.x"
   }
+=======
+  "buildCommand": "npm run build && chmod +x vercel-build.sh && ./vercel-build.sh"
+>>>>>>> 432e908168a490f3366d6d02ea49825f46638bc4
 }
