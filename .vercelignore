@@ -3,53 +3,30 @@
 .gitignore
 .gitattributes
 
-# Laravel framework directories that are rebuilt on deploy
-task-manager/vendor
-task-manager/node_modules
-task-manager/.env
-task-manager/.env.*
-task-manager/storage/*.key
-
-# Caches that are rebuilt on deploy
-task-manager/bootstrap/cache/*
-task-manager/storage/framework/cache/*
-task-manager/storage/framework/sessions/*
-task-manager/storage/framework/testing/*
-task-manager/storage/framework/views/*
-task-manager/storage/logs/*
-
 # Development files
-task-manager/.editorconfig
-task-manager/.phpunit.result.cache
-task-manager/phpunit.xml
-task-manager/README.md
-task-manager/CHANGELOG.md
-task-manager/.vscode
-task-manager/.idea
-task-manager/docker*
-task-manager/tests
+.editorconfig
+.phpunit.result.cache
+phpunit.xml
+README.md
+CHANGELOG.md
+.vscode
+.idea
+docker*
+tests
 
-# Already built assets
-task-manager/public/build
-task-manager/public/hot
-
-# .vercelignore file to exclude unnecessary files from deployment
-/vendor
+# Laravel framework directories that are rebuilt on deploy
 /node_modules
 .env
 .env.example
-.git
-.gitignore
-.gitattributes
-.idea
-.vscode
-README.md
-/storage/*.key
-/storage/framework/cache/**
-/storage/framework/sessions/**
-/storage/framework/views/**
-/storage/logs/**
-/tests
-phpunit.xml
-.editorconfig
-/bootstrap/cache/**
+
+# Caches that are rebuilt on deploy
+/bootstrap/cache/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Already built assets
+/public/build
+/public/hot
