@@ -34,17 +34,22 @@ task-manager/public/build
 task-manager/public/hot
 
 # .vercelignore file to exclude unnecessary files from deployment
-.git
+/vendor
+/node_modules
 .env
-.env.*
-vendor/*/test*
-vendor/*/tests*
-tests
-*.log
+.env.example
+.git
 .gitignore
 .gitattributes
+.idea
+.vscode
 README.md
-CHANGELOG.md
+/storage/*.key
+/storage/framework/cache/**
+/storage/framework/sessions/**
+/storage/framework/views/**
+/storage/logs/**
+/tests
 phpunit.xml
-*.sqlite
-node_modules
+.editorconfig
+/bootstrap/cache/**

@@ -1,26 +1,21 @@
 {
   "version": 2,
-  "framework": null,
+  "framework": "laravel",
   "functions": {
     "api/*.php": {
-      "runtime": "vercel-php@0.6.1"
+      "runtime": "vercel-php@0.6.0"
     }
   },
-  "buildCommand": "npm run build",
+  "buildCommand": "composer install --no-dev && npm ci && npm run build",
   "outputDirectory": "public",
-  "devCommand": "php artisan serve --host=0.0.0.0 --port=$PORT",
   "routes": [
     {
       "src": "/build/(.*)",
       "dest": "/public/build/$1"
     },
     {
-      "src": "/favicon.ico",
-      "dest": "public/favicon.ico"
-    },
-    {
-      "src": "/robots.txt",
-      "dest": "public/robots.txt"
+      "src": "/(css|js|images|fonts|favicon.ico|robots.txt)/(.*)",
+      "dest": "/public/$1/$2"
     },
     {
       "src": "/(.*)",
