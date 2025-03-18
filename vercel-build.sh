@@ -1,14 +1,20 @@
 #!/bin/bash
-# Install npm dependencies and build assets
-npm ci
-npm run build
+set -e
 
-# Create SQLite database in the writable /tmp directory
-mkdir -p /tmp
-touch /tmp/database.sqlite
-php -r "file_exists('.env.production') && copy('.env.production', '.env');"
+# Ensure the script doesn't fail if PHP is not in path
+echo "Running build script..."
 
-# If we have a database migration file, try to migrate
-if [ -f "database/migrations/2023_05_10_000000_create_tasks_table.php" ]; then
-  php artisan migrate --force --no-interaction
+# Vite build is already being run by Vercel
+# npm run build
+
+# Generate Laravel caches if PHP is available
+if command -v php &> /dev/null; then
+    echo "Generating Laravel caches..."
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+else
+    echo "PHP not available, skipping Laravel cache generation"
 fi
+
+echo "Build completed"
