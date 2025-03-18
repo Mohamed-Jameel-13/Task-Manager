@@ -1,45 +1,32 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.php": {
-      "runtime": "vercel-php@0.6.0"
-    }
-  },
-  "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh",
-  "outputDirectory": "public",
-  "routes": [
+  "builds": [
     {
-      "src": "/(css|js|build|images|fonts|favicon.ico|robots.txt)/(.*)",
-      "dest": "/public/$1/$2"
+      "src": "api/index.php",
+      "use": "vercel-php@0.6.0"
     },
     {
-      "src": "/build/(.*)",
-      "dest": "/public/build/$1"
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(css|js|images|fonts|assets)/(.*)",
+      "dest": "public/$1/$2"
+    },
+    {
+      "src": "/(.*)\\.(.+)",
+      "dest": "public/$1.$2"
     },
     {
       "src": "/(.*)",
-      "dest": "/api/index.php"
+      "dest": "api/index.php"
     }
   ],
-  "env": {
-    "APP_NAME": "Task Manager",
-    "APP_ENV": "production",
-    "APP_KEY": "base64:Fo+r7X31qSL1NiBk+mPU/REAAonyGaJXSqn4LQ272uA=",
-    "APP_DEBUG": "true",
-    "APP_URL": "https://task-manager-silk-two.vercel.app",
-    "APP_CONFIG_CACHE": "/tmp/config.php",
-    "APP_EVENTS_CACHE": "/tmp/events.php",
-    "APP_PACKAGES_CACHE": "/tmp/packages.php",
-    "APP_ROUTES_CACHE": "/tmp/routes.php",
-    "APP_SERVICES_CACHE": "/tmp/services.php",
-    "VIEW_COMPILED_PATH": "/tmp/views",
-    "CACHE_DRIVER": "array",
-    "LOG_CHANNEL": "stderr",
-    "LOG_LEVEL": "debug",
-    "SESSION_DRIVER": "array",
-    "SESSION_LIFETIME": "120",
-    "DB_CONNECTION": "sqlite",
-    "DB_DATABASE": "/tmp/database.sqlite",
-    "FILESYSTEM_DISK": "local"
+  "functions": {
+    "api/*.php": {
+      "runtime": "vercel-php@0.6.0"
+    }
   }
 }
