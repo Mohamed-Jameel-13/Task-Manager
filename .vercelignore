@@ -1,0 +1,34 @@
+# Git and versioning
+.git
+.gitignore
+.gitattributes
+
+# Laravel framework directories that are rebuilt on deploy
+task-manager/vendor
+task-manager/node_modules
+task-manager/.env
+task-manager/.env.*
+task-manager/storage/*.key
+
+# Caches that are rebuilt on deploy
+task-manager/bootstrap/cache/*
+task-manager/storage/framework/cache/*
+task-manager/storage/framework/sessions/*
+task-manager/storage/framework/testing/*
+task-manager/storage/framework/views/*
+task-manager/storage/logs/*
+
+# Development files
+task-manager/.editorconfig
+task-manager/.phpunit.result.cache
+task-manager/phpunit.xml
+task-manager/README.md
+task-manager/CHANGELOG.md
+task-manager/.vscode
+task-manager/.idea
+task-manager/docker*
+task-manager/tests
+
+# Already built assets
+task-manager/public/build
+task-manager/public/hot

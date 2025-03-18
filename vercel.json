@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "devCommand": "php artisan serve --host=0.0.0.0 --port=$PORT",
+  "builds": [
+    {
+      "src": "task-manager/api/index.php",
+      "use": "vercel-php@0.6.0"
+    },
+    {
+      "src": "task-manager/public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/build/(.*)",
+      "dest": "task-manager/public/build/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "task-manager/public/favicon.ico"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "task-manager/public/robots.txt"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "task-manager/api/index.php"
+    }
+  ],
+  "env": {
+    "APP_NAME": "Laravel",
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://your-vercel-url.vercel.app",
+    "ASSET_URL": "",
+    "APP_CONFIG_CACHE": "/tmp/config.php",
+    "APP_EVENTS_CACHE": "/tmp/events.php",
+    "APP_PACKAGES_CACHE": "/tmp/packages.php",
+    "APP_ROUTES_CACHE": "/tmp/routes.php",
+    "APP_SERVICES_CACHE": "/tmp/services.php",
+    "VIEW_COMPILED_PATH": "/tmp/views",
+    "CACHE_DRIVER": "array",
+    "LOG_CHANNEL": "stderr",
+    "SESSION_DRIVER": "array",
+    "SESSION_LIFETIME": "120",
+    "DB_CONNECTION": "sqlite"
+  }
+}
