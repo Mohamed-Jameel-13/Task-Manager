@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "framework": "laravel",
   "builds": [
     {
       "src": "api/index.php",
@@ -12,7 +13,7 @@
   ],
   "routes": [
     {
-      "src": "/(css|js|images|fonts|assets)/(.*)",
+      "src": "/(css|js|images|fonts|assets|build)/(.*)",
       "dest": "public/$1/$2"
     },
     {
@@ -21,12 +22,8 @@
     },
     {
       "src": "/(.*)",
-      "dest": "api/index.php"
+      "dest": "/api/index.php"
     }
   ],
-  "functions": {
-    "api/*.php": {
-      "runtime": "vercel-php@0.6.0"
-    }
-  }
+  "buildCommand": "npm run build && chmod +x vercel-build.sh && ./vercel-build.sh"
 }
