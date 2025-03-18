@@ -25,7 +25,7 @@
     "APP_NAME": "Task Manager",
     "APP_ENV": "production",
     "APP_KEY": "base64:Fo+r7X31qSL1NiBk+mPU/REAAonyGaJXSqn4LQ272uA=",
-    "APP_DEBUG": "true",
+    "APP_DEBUG": "false",
     "APP_URL": "https://task-manager-silk-two.vercel.app",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",
@@ -35,11 +35,15 @@
     "VIEW_COMPILED_PATH": "/tmp/views",
     "CACHE_DRIVER": "array",
     "LOG_CHANNEL": "stderr",
-    "LOG_LEVEL": "debug",
     "SESSION_DRIVER": "array",
     "SESSION_LIFETIME": "120",
     "DB_CONNECTION": "sqlite",
     "DB_DATABASE": "/tmp/database.sqlite",
-    "FILESYSTEM_DISK": "local"
+    "FILESYSTEM_DISK": "local",
+    "VIEW_CACHE_PATH": "/tmp/views"
+  },
+  "framework": {
+    "type": "laravel",
+    "version": "10.x"
   }
 }
