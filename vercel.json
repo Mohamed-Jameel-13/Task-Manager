@@ -1,22 +1,18 @@
 {
   "version": 2,
+  "framework": null,
+  "functions": {
+    "api/*.php": {
+      "runtime": "vercel-php@0.6.1"
+    }
+  },
   "buildCommand": "npm run build",
   "outputDirectory": "public",
   "devCommand": "php artisan serve --host=0.0.0.0 --port=$PORT",
-  "builds": [
-    {
-      "src": "api/index.php",
-      "use": "vercel-php@0.6.0"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
-  ],
   "routes": [
     {
       "src": "/build/(.*)",
-      "dest": "public/build/$1"
+      "dest": "/public/build/$1"
     },
     {
       "src": "/favicon.ico",
@@ -28,14 +24,14 @@
     },
     {
       "src": "/(.*)",
-      "dest": "api/index.php"
+      "dest": "/api/index.php"
     }
   ],
   "env": {
     "APP_NAME": "Laravel",
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_URL": "https://your-vercel-url.vercel.app",
+    "APP_URL": "https://task-manager-silk-two.vercel.app",
     "ASSET_URL": "",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",

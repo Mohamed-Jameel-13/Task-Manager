@@ -32,3 +32,19 @@ task-manager/tests
 # Already built assets
 task-manager/public/build
 task-manager/public/hot
+
+# .vercelignore file to exclude unnecessary files from deployment
+.git
+.env
+.env.*
+vendor/*/test*
+vendor/*/tests*
+tests
+*.log
+.gitignore
+.gitattributes
+README.md
+CHANGELOG.md
+phpunit.xml
+*.sqlite
+node_modules
