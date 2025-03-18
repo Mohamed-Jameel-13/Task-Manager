@@ -5,30 +5,30 @@
   "devCommand": "php artisan serve --host=0.0.0.0 --port=$PORT",
   "builds": [
     {
-      "src": "task-manager/api/index.php",
+      "src": "api/index.php",
       "use": "vercel-php@0.6.0"
     },
     {
-      "src": "task-manager/public/**",
+      "src": "public/**",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/build/(.*)",
-      "dest": "task-manager/public/build/$1"
+      "dest": "public/build/$1"
     },
     {
       "src": "/favicon.ico",
-      "dest": "task-manager/public/favicon.ico"
+      "dest": "public/favicon.ico"
     },
     {
       "src": "/robots.txt",
-      "dest": "task-manager/public/robots.txt"
+      "dest": "public/robots.txt"
     },
     {
       "src": "/(.*)",
-      "dest": "task-manager/api/index.php"
+      "dest": "api/index.php"
     }
   ],
   "env": {
