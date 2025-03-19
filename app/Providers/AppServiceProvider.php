@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use PDO;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,19 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+
+        // Force HTTPS on production
+        if (env('APP_ENV') === 'production' || env('VERCEL_ENV')) {
+            URL::forceScheme('https');
+        }
+
+        // Disable CSRF token verification on Vercel deployment
+        if (env('VERCEL_ENV')) {
+            \Illuminate\Support\Facades\App::singleton(
+                \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+                \App\Http\Middleware\DisabledCsrfToken::class
+            );
+        }
 
         // Create required tmp directories and database for Vercel first
         if (env('VERCEL_ENV')) {
