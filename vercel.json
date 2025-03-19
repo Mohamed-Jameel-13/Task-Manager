@@ -26,5 +26,6 @@
     "SESSION_SECURE_COOKIE": "true",
     "SESSION_SAME_SITE": "none"
   },
+  "buildCommand": "bash vercel-build.sh",
   "outputDirectory": "."
 }
