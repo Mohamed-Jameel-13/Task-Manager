@@ -1,8 +1,9 @@
 /vendor
+/.git
 /node_modules
+/storage/logs
 .env
 .env.*
-.git
 .gitignore
 .idea
 .vscode

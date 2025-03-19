@@ -1,21 +1,25 @@
 {
   "version": 2,
+  "framework": null,
   "functions": {
-    "api/*.php": {
-      "runtime": "vercel-php@0.6.2"
+    "api/index.php": {
+      "runtime": "vercel-php@0.6.0"
     }
   },
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.php"
-    }
+    { "src": "/(css|js|images|fonts|favicon)/(.*)", "dest": "public/$1/$2" },
+    { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "env": {
+    "APP_NAME": "Task Manager",
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "DB_CONNECTION": "sqlite",
-    "DB_DATABASE": "/tmp/database.sqlite"
+    "APP_URL": "https://task-manager-vercel.vercel.app",
+    "SESSION_DRIVER": "cookie",
+    "SESSION_LIFETIME": "120",
+    "SESSION_SECURE_COOKIE": "true",
+    "SESSION_SAME_SITE": "none"
   },
+  "buildCommand": "php -r \"file_exists('.env') || copy('.env.example', '.env');\" && composer install --no-dev && php artisan key:generate --force",
   "outputDirectory": "public"
 }

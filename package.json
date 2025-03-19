@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "echo 'No frontend build needed'",
         "start": "node dist/main.js",
         "gcp-build": "npm run build",
         "netlify-build": "vite build"

@@ -76,5 +76,5 @@ if (!file_exists($databasePath) && (getenv('VERCEL_ENV') || getenv('VERCEL') || 
     }
 }
 
-// Forward to the Laravel application bootstrap
+// Forward Vercel requests to the public directory
 require __DIR__ . '/../public/index.php';

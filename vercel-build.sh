@@ -3,6 +3,21 @@ set -e
 
 echo "Running build script..."
 
+# Copy .env file
+cp .env.example .env
+
+# Install Composer dependencies
+composer install --no-dev
+
+# Generate application key
+php artisan key:generate --force
+
+# Create storage symbolic link
+# php artisan storage:link
+
+# Set permissions if needed
+chmod -R 755 storage bootstrap/cache
+
 # Download Composer
 # curl -sS https://getcomposer.org/installer -o composer-setup.php
 
@@ -55,4 +70,4 @@ fi
 # php artisan route:cache
 # php artisan view:cache
 
-echo "Build completed successfully"
+echo "Build completed successfully!"
