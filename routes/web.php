@@ -18,7 +18,7 @@ Route::get('/', function () {
     return redirect()->route('tasks.index');
 });
 
-// Wrap task routes with middleware that disables CSRF protection when on Vercel
-Route::middleware(env('VERCEL_ENV') ? ['web', 'session'] : ['web'])->group(function () {
+// Wrap task routes with middleware that explicitly excludes CSRF verification
+Route::withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])->group(function () {
     Route::resource('tasks', \App\Http\Controllers\TaskController::class);
 });
