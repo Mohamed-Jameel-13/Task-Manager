@@ -7,6 +7,7 @@ echo "Running build script..."
 npm ci
 npm run build
 
+<<<<<<< HEAD
 # Create required directories
 mkdir -p /tmp/storage/framework/{sessions,views,cache}
 mkdir -p /tmp/storage/logs
@@ -34,5 +35,11 @@ if command -v sqlite3 &> /dev/null; then
 else
     echo "SQLite3 command not available during build, schema will be created at runtime"
 fi
+=======
+# Create database directory
+mkdir -p /tmp
+touch /tmp/database.sqlite
+>>>>>>> bdf72baf62bafaad0a80ab817719aeb0267f69a1
 
+echo "Created SQLite database at /tmp/database.sqlite"
 echo "Build completed"
