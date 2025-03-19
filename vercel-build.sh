@@ -7,7 +7,32 @@ echo "Running build script..."
 npm ci
 npm run build
 
-# Skip Laravel cache commands as PHP is not available in the build environment
-echo "PHP commands skipped in build script - will be handled by Vercel PHP runtime"
+# Create required directories
+mkdir -p /tmp/storage/framework/{sessions,views,cache}
+mkdir -p /tmp/storage/logs
+
+# Create database directory and file with proper permissions
+mkdir -p /tmp
+touch /tmp/database.sqlite
+chmod 777 /tmp/database.sqlite
+chmod -R 777 /tmp/storage
+
+# Create an empty SQLite database with proper schema
+echo "Creating empty SQLite database structure..."
+cat > /tmp/init-db.sql << 'EOF'
+CREATE TABLE IF NOT EXISTS "migrations" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "migration" VARCHAR NOT NULL,
+    "batch" INTEGER NOT NULL
+);
+EOF
+
+# Initialize the database with the schema
+if command -v sqlite3 &> /dev/null; then
+    sqlite3 /tmp/database.sqlite < /tmp/init-db.sql
+    echo "SQLite database initialized with schema"
+else
+    echo "SQLite3 command not available during build, schema will be created at runtime"
+fi
 
 echo "Build completed"

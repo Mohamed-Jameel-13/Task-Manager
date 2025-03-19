@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    'driver' => env('VERCEL_ENV') ? 'array' : env('SESSION_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'files' => storage_path('framework/sessions'),
+    'files' => env('VERCEL_ENV') ? '/tmp/framework/sessions' : storage_path('framework/sessions'),
 
     /*
     |--------------------------------------------------------------------------

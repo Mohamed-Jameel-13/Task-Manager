@@ -4,6 +4,16 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+$app = new Illuminate\Foundation\Application(
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+);
+
+// Set up Vercel-specific configuration
+if (env('VERCEL_ENV')) {
+    $app->useStoragePath('/tmp/storage');
+    $app->useCacheStoragePath('/tmp/bootstrap/cache');
+}
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
