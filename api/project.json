@@ -1,4 +1,7 @@
 {
   "runtime": "vercel-php@0.6.0",
-  "handler": "index.php"
+  "handler": "index.php",
+  "config": {
+    "maxDuration": 60
+  }
 }
