@@ -18,4 +18,5 @@ Route::get('/', function () {
     return redirect()->route('tasks.index');
 });
 
+// Use normal routing since CSRF exceptions are already defined in VerifyCsrfToken middleware
 Route::resource('tasks', \App\Http\Controllers\TaskController::class);
