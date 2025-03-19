@@ -18,7 +18,4 @@ Route::get('/', function () {
     return redirect()->route('tasks.index');
 });
 
-// Wrap task routes with middleware that explicitly excludes CSRF verification
-Route::withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])->group(function () {
-    Route::resource('tasks', \App\Http\Controllers\TaskController::class);
-});
+Route::resource('tasks', \App\Http\Controllers\TaskController::class);
