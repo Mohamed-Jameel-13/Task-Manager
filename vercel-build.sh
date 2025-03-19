@@ -7,7 +7,7 @@ echo "Running build script..."
 npm ci
 npm run build
 
-# Create required directories first
+# Create required directories
 mkdir -p /tmp/storage/framework/{sessions,views,cache}
 mkdir -p /tmp/storage/logs
 mkdir -p /tmp/bootstrap/cache
@@ -19,10 +19,6 @@ chmod 777 /tmp/database.sqlite
 chmod -R 777 /tmp/storage
 chmod -R 777 /tmp/bootstrap
 
-# Initialize SQLite database and run migrations
-echo "Running database migrations..."
-php artisan migrate --force --no-interaction
-
 # Install composer dependencies
 composer install --no-dev --optimize-autoloader
 
@@ -30,7 +26,8 @@ composer install --no-dev --optimize-autoloader
 php artisan key:generate --force
 
 # Run migrations
-php artisan migrate --force
+echo "Running database migrations..."
+php artisan migrate --force --no-interaction
 
 # Cache configuration
 php artisan config:cache
