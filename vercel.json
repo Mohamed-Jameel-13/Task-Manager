@@ -36,6 +36,7 @@
         "DB_CONNECTION": "pgsql",
         "FILESYSTEM_DISK": "local"
     },
-    "buildCommand": "npm install && npm run build && composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache",
+    "buildCommand": "npm install && npm run build && php composer.phar install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache",
+    "installCommand": "curl -sS https://getcomposer.org/installer | php",
     "outputDirectory": "public"
 }
