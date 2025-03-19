@@ -3,6 +3,12 @@ set -e
 
 echo "Running build script..."
 
+# Download Composer
+curl -sS https://getcomposer.org/installer | php
+
+# Move Composer to a globally accessible location
+mv composer.phar /usr/local/bin/composer
+
 # Install dependencies
 composer install --no-dev --optimize-autoloader
 npm ci
