@@ -7,7 +7,9 @@
     }
   },
   "routes": [
-    { "src": "/(css|js|images|fonts|favicon)/(.*)", "dest": "public/$1/$2" },
+    { "src": "/(css|js|images|fonts|favicon|build)/(.*)", "dest": "public/$1/$2" },
+    { "src": "/favicon.ico", "dest": "public/favicon.ico" },
+    { "src": "/robots.txt", "dest": "public/robots.txt" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "env": {
@@ -15,11 +17,15 @@
     "APP_ENV": "production",
     "APP_DEBUG": "false",
     "APP_URL": "https://task-manager-vercel.vercel.app",
+    "APP_KEY": "base64:JT+DhYrz/heCTsLh5M5+5yMRO9b2zOgE+89p7Lrne9g=",
+    "DB_CONNECTION": "sqlite",
+    "DB_DATABASE": "/tmp/database.sqlite",
+    "CACHE_DRIVER": "file",
     "SESSION_DRIVER": "cookie",
     "SESSION_LIFETIME": "120",
     "SESSION_SECURE_COOKIE": "true",
     "SESSION_SAME_SITE": "none"
   },
-  "buildCommand": "npm run build",
+  "buildCommand": "php artisan migrate --force && npm run build",
   "outputDirectory": "."
 }

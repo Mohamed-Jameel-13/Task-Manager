@@ -1,71 +1,49 @@
 <?php
 
-// For Vercel, we need to set up the environment
-require __DIR__ . '/../public/vercel.php';
+// For Vercel deployment
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Set absolute paths for Vercel environment
+// Set document root and working directory
 $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/../public';
 chdir($_SERVER['DOCUMENT_ROOT']);
 
-// Check SQLite extension status for Vercel environment
-if (getenv('VERCEL_ENV')) {
-    // Output debug information only during deployment build time
-    if (getenv('VERCEL_BUILD_STEP')) {
-        echo "PDO SQLite Extension: " . (extension_loaded('pdo_sqlite') ? 'Loaded' : 'Not Loaded') . PHP_EOL;
-        echo "SQLite3 Extension: " . (extension_loaded('sqlite3') ? 'Loaded' : 'Not Loaded') . PHP_EOL;
-    }
+// Setup environment paths for Vercel
+$database_path = '/tmp/database.sqlite';
+$storage_path = '/tmp/storage';
+$bootstrap_path = '/tmp/bootstrap';
 
-    // Create SQLite database file if it doesn't exist
-    $databasePath = '/tmp/database.sqlite';
-    if (!file_exists($databasePath)) {
-        if (getenv('VERCEL_BUILD_STEP')) {
-            echo "Creating SQLite database at: $databasePath" . PHP_EOL;
-        }
-        
-        touch($databasePath);
-        chmod($databasePath, 0777);
-        
-        // Create a minimal database structure for migrations
-        if (extension_loaded('pdo_sqlite')) {
-            try {
-                $pdo = new PDO('sqlite:' . $databasePath);
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $pdo->exec("
-                    CREATE TABLE IF NOT EXISTS migrations (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        migration VARCHAR NOT NULL,
-                        batch INTEGER NOT NULL
-                    );
-                ");
-                if (getenv('VERCEL_BUILD_STEP')) {
-                    echo "Successfully created migrations table" . PHP_EOL;
-                }
-            } catch (Exception $e) {
-                if (getenv('VERCEL_BUILD_STEP')) {
-                    echo "Database initialization error: " . $e->getMessage() . PHP_EOL;
-                }
-            }
-        } else if (getenv('VERCEL_BUILD_STEP')) {
-            echo "Cannot create schema: pdo_sqlite extension not loaded" . PHP_EOL;
-        }
-    } else if (getenv('VERCEL_BUILD_STEP')) {
-        echo "SQLite database already exists at: $databasePath" . PHP_EOL;
-        echo "Database file is " . (is_writable($databasePath) ? 'writable' : 'not writable') . PHP_EOL;
-    }
+// Create necessary directories
+if (!file_exists($storage_path)) {
+    mkdir($storage_path, 0777, true);
+    mkdir($storage_path . '/app', 0777, true);
+    mkdir($storage_path . '/app/public', 0777, true);
+    mkdir($storage_path . '/framework', 0777, true);
+    mkdir($storage_path . '/framework/cache', 0777, true);
+    mkdir($storage_path . '/framework/sessions', 0777, true);
+    mkdir($storage_path . '/framework/views', 0777, true);
+    mkdir($storage_path . '/logs', 0777, true);
 }
 
-// Vercel SQLite database setup
-$databasePath = '/tmp/database.sqlite';
+if (!file_exists($bootstrap_path)) {
+    mkdir($bootstrap_path, 0777, true);
+    mkdir($bootstrap_path . '/cache', 0777, true);
+}
 
-// Only run this setup in production environment
-if (!file_exists($databasePath) && (getenv('VERCEL_ENV') || getenv('VERCEL') || getenv('NOW_REGION'))) {
-    touch($databasePath);
-    chmod($databasePath, 0777);
-    
+// Set up database
+if (!file_exists($database_path)) {
+    touch($database_path);
+    chmod($database_path, 0777);
+
     if (extension_loaded('pdo_sqlite')) {
         try {
-            $pdo = new PDO('sqlite:' . $databasePath);
+            $pdo = new PDO('sqlite:' . $database_path);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            // Enable foreign keys
+            $pdo->exec('PRAGMA foreign_keys = ON');
+            
+            // Create migrations table
             $pdo->exec("
                 CREATE TABLE IF NOT EXISTS migrations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -79,5 +57,19 @@ if (!file_exists($databasePath) && (getenv('VERCEL_ENV') || getenv('VERCEL') || 
     }
 }
 
-// Forward Vercel requests to the public directory
+// Important: Configure Laravel to use these paths
+$_ENV['DB_DATABASE'] = $database_path;
+$_ENV['DB_CONNECTION'] = 'sqlite';
+$_ENV['CACHE_DRIVER'] = 'file';
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_ENV['VIEW_COMPILED_PATH'] = $bootstrap_path . '/cache';
+$_ENV['STORAGE_PATH'] = $storage_path;
+
+// Set storage directory symlink
+$public_storage = $_SERVER['DOCUMENT_ROOT'] . '/storage';
+if (!file_exists($public_storage)) {
+    @symlink($storage_path, $public_storage);
+}
+
+// Boot the Laravel application directly
 require __DIR__ . '/../public/index.php';

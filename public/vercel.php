@@ -1,12 +1,40 @@
 <?php
 
+// This file is used exclusively by Vercel deployment
+// It should NOT be included by api/index.php
+
 // Enable error reporting for deployment debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// This file should not be accessed directly in the Vercel environment
+// It should only be required by the main Laravel bootstrap process
+if (isset($_SERVER['REQUEST_URI']) && !getenv('VERCEL_LOCAL_DEV')) {
+    http_response_code(404);
+    exit('Not found');
+}
+
+// Set environment variables for Laravel
 $database_path = '/tmp/database.sqlite';
 $storage_path = '/tmp/storage';
 $bootstrap_path = '/tmp/bootstrap';
+
+// Important: Configure Laravel to use these paths
+putenv("DB_DATABASE={$database_path}");
+putenv("DB_CONNECTION=sqlite");
+putenv("CACHE_DRIVER=file");
+putenv("SESSION_DRIVER=cookie");
+putenv("VIEW_COMPILED_PATH={$bootstrap_path}/cache");
+putenv("STORAGE_PATH={$storage_path}");
+
+// Set as environment variables too
+$_ENV['DB_DATABASE'] = $database_path;
+$_ENV['DB_CONNECTION'] = 'sqlite';
+$_ENV['CACHE_DRIVER'] = 'file';
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_ENV['VIEW_COMPILED_PATH'] = $bootstrap_path . '/cache';
+$_ENV['STORAGE_PATH'] = $storage_path;
+$_ENV['APP_KEY'] = 'base64:JT+DhYrz/heCTsLh5M5+5yMRO9b2zOgE+89p7Lrne9g=';
 
 // Create necessary directories
 if (!file_exists($storage_path)) {
@@ -73,14 +101,6 @@ if (!file_exists($database_path)) {
         }
     }
 }
-
-// Important: Configure Laravel to use these paths
-$_ENV['DB_DATABASE'] = $database_path;
-$_ENV['CACHE_DRIVER'] = 'file';
-$_ENV['SESSION_DRIVER'] = 'cookie';
-$_ENV['VIEW_COMPILED_PATH'] = $bootstrap_path . '/cache';
-$_ENV['STORAGE_PATH'] = $storage_path;
-$_ENV['APP_KEY'] = 'base64:JT+DhYrz/heCTsLh5M5+5yMRO9b2zOgE+89p7Lrne9g=';
 
 // Set storage directory symlink
 $public_storage = __DIR__ . '/storage';
