@@ -25,15 +25,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if(env('APP_ENV') !== 'local') {
+            URL::forceScheme('https');
+        }
+        
+        // Fix for MySQL < 5.7.7 or MariaDB < 10.2.2
         Schema::defaultStringLength(191);
 
         // Force HTTPS on production
         if (env('APP_ENV') === 'production' || env('VERCEL_ENV')) {
-            URL::forceScheme('https');
-        }
-
-        // Force HTTPS on non-local environments
-        if(env('APP_ENV') !== 'local') {
             URL::forceScheme('https');
         }
 
