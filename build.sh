@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# Install PHP
-apt-get update
-apt-get install -y php php-curl php-mbstring php-xml
+# Create directories needed by Laravel
+mkdir -p bootstrap/cache
+mkdir -p storage/framework/{sessions,views,cache}
+mkdir -p storage/logs
 
-# Install Composer
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
+# Create storage symlink if it doesn't exist
+if [ ! -L public/storage ]; then
+    ln -s ../storage/app/public public/storage
+fi
 
-# Install Node.js dependencies and build assets
-npm install
-npm run build
+# Set proper permissions
+chmod -R 777 storage bootstrap/cache
 
-# Install PHP dependencies
-composer install --no-dev --optimize-autoloader
-
-# Generate Laravel caches
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# Generate Laravel caches if we're in production
+if [ "$APP_ENV" = "production" ]; then
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+fi

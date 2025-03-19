@@ -1,5 +1,8 @@
 {
     "version": 2,
+    "buildCommand": "npm ci && npm run build",
+    "outputDirectory": "public",
+    "framework": null,
     "functions": {
         "api/*.php": {
             "runtime": "vercel-php@0.6.0",
@@ -34,7 +37,5 @@
         "STORAGE_PATH": "/tmp/storage",
         "DB_CONNECTION": "pgsql",
         "FILESYSTEM_DISK": "local"
-    },
-    "buildCommand": "npm install && npm run build && composer install --prefer-dist --optimize-autoloader --no-dev",
-    "outputDirectory": "public"
+    }
 }
