@@ -32,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        // Force HTTPS on non-local environments
+        if(env('APP_ENV') !== 'local') {
+            URL::forceScheme('https');
+        }
+
         // Disable CSRF token verification on Vercel deployment
         if (env('VERCEL_ENV')) {
             \Illuminate\Support\Facades\App::singleton(
