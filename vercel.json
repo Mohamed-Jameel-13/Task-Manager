@@ -1,5 +1,6 @@
 {
     "version": 2,
+    "framework": "laravel",
     "functions": {
         "api/*.php": {
             "runtime": "vercel-php@0.6.0",
@@ -36,7 +37,6 @@
         "DB_CONNECTION": "pgsql",
         "FILESYSTEM_DISK": "local"
     },
-    "buildCommand": "npm install && npm run build && php composer.phar install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache",
-    "installCommand": "curl -sS https://getcomposer.org/installer | php",
+    "buildCommand": "php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\" && php composer-setup.php && php composer.phar install --no-dev --optimize-autoloader && npm install && npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache",
     "outputDirectory": "public"
 }
