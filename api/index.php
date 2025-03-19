@@ -51,8 +51,22 @@ if (!file_exists($database_path)) {
                     batch INTEGER NOT NULL
                 );
             ");
+
+            // Manual migrations - create tasks table if it doesn't exist
+            $pdo->exec("
+                CREATE TABLE IF NOT EXISTS tasks (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title VARCHAR NOT NULL,
+                    description TEXT NULL,
+                    status VARCHAR NOT NULL DEFAULT 'pending',
+                    due_date DATETIME NULL,
+                    created_at DATETIME NOT NULL,
+                    updated_at DATETIME NOT NULL
+                );
+            ");
         } catch (Exception $e) {
             // Silent fail in production
+            error_log("Database error: " . $e->getMessage());
         }
     }
 }
@@ -64,6 +78,7 @@ $_ENV['CACHE_DRIVER'] = 'file';
 $_ENV['SESSION_DRIVER'] = 'cookie';
 $_ENV['VIEW_COMPILED_PATH'] = $bootstrap_path . '/cache';
 $_ENV['STORAGE_PATH'] = $storage_path;
+$_ENV['APP_KEY'] = 'base64:JT+DhYrz/heCTsLh5M5+5yMRO9b2zOgE+89p7Lrne9g=';
 
 // Set storage directory symlink
 $public_storage = $_SERVER['DOCUMENT_ROOT'] . '/storage';
