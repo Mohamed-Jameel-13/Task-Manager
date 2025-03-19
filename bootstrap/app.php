@@ -4,6 +4,12 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+// Early database initialization for Vercel
+if (env('VERCEL_ENV') && !file_exists('/tmp/database.sqlite')) {
+    touch('/tmp/database.sqlite');
+    chmod('/tmp/database.sqlite', 0777);
+}
+
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );

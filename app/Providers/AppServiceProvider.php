@@ -23,13 +23,29 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Enable SQLite foreign key support
-        if (DB::connection()->getDriverName() === 'sqlite') {
-            DB::statement('PRAGMA foreign_keys=1');
-        }
+        Schema::defaultStringLength(191);
 
-        // Create required tmp directories for Vercel
+        // Create required tmp directories and database for Vercel first
         if (env('VERCEL_ENV')) {
+            // Create database first
+            $databasePath = '/tmp/database.sqlite';
+            if (!file_exists($databasePath)) {
+                touch($databasePath);
+                chmod($databasePath, 0777);
+                
+                // Initialize with basic schema if PDO is available
+                if (extension_loaded('pdo_sqlite')) {
+                    try {
+                        $pdo = new \PDO('sqlite:' . $databasePath);
+                        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                        $pdo->exec('PRAGMA foreign_keys=ON');
+                    } catch (\Exception $e) {
+                        \Log::error('Failed to initialize SQLite: ' . $e->getMessage());
+                    }
+                }
+            }
+
+            // Then create directories
             $dirs = [
                 '/tmp/storage/app/public',
                 '/tmp/storage/framework/cache',
@@ -45,15 +61,15 @@ class AppServiceProvider extends ServiceProvider
                 }
                 chmod($dir, 0777);
             }
-
-            // Create SQLite database if it doesn't exist
-            $databasePath = '/tmp/database.sqlite';
-            if (!file_exists($databasePath)) {
-                touch($databasePath);
-                chmod($databasePath, 0777);
-            }
         }
 
-        Schema::defaultStringLength(191);
+        // Enable SQLite foreign keys only after ensuring database exists
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            try {
+                DB::statement('PRAGMA foreign_keys=1');
+            } catch (\Exception $e) {
+                \Log::error('Failed to set SQLite foreign keys: ' . $e->getMessage());
+            }
+        }
     }
 }
