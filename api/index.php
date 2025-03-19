@@ -51,5 +51,30 @@ if (getenv('VERCEL_ENV')) {
     }
 }
 
+// Vercel SQLite database setup
+$databasePath = '/tmp/database.sqlite';
+
+// Only run this setup in production environment
+if (!file_exists($databasePath) && (getenv('VERCEL_ENV') || getenv('VERCEL') || getenv('NOW_REGION'))) {
+    touch($databasePath);
+    chmod($databasePath, 0777);
+    
+    if (extension_loaded('pdo_sqlite')) {
+        try {
+            $pdo = new PDO('sqlite:' . $databasePath);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->exec("
+                CREATE TABLE IF NOT EXISTS migrations (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    migration VARCHAR NOT NULL,
+                    batch INTEGER NOT NULL
+                );
+            ");
+        } catch (Exception $e) {
+            // Silent fail in production
+        }
+    }
+}
+
 // Forward to the Laravel application bootstrap
 require __DIR__ . '/../public/index.php';

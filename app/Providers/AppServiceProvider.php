@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,17 +33,20 @@ class AppServiceProvider extends ServiceProvider
             if (!file_exists($databasePath)) {
                 touch($databasePath);
                 chmod($databasePath, 0777);
-                
-                // Initialize with basic schema if PDO is available
-                if (extension_loaded('pdo_sqlite')) {
-                    try {
-                        $pdo = new \PDO('sqlite:' . $databasePath);
-                        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-                        $pdo->exec('PRAGMA foreign_keys=ON');
-                    } catch (\Exception $e) {
-                        \Log::error('Failed to initialize SQLite: ' . $e->getMessage());
-                    }
+            }
+
+            try {
+                $pdo = DB::connection()->getPdo();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                // Check if tasks table exists
+                $result = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='tasks'");
+                if (!$result->fetch()) {
+                    // Run migrations if table is missing
+                    \Artisan::call('migrate', ['--force' => true]);
                 }
+            } catch (\Exception $e) {
+                \Log::error('Database initialization error: ' . $e->getMessage());
             }
 
             // Then create directories
