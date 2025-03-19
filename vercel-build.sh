@@ -4,7 +4,10 @@ set -e
 echo "Running build script..."
 
 # Download Composer
-curl -sS https://getcomposer.org/installer | php
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+
+# Run the installer
+php composer-setup.php
 
 # Move Composer to a globally accessible location
 mv composer.phar /usr/local/bin/composer
