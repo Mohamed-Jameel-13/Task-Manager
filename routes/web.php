@@ -14,8 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Health check route for Vercel
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
+
+// Basic route to test the setup
 Route::get('/', function () {
-    return redirect()->route('tasks.index');
+    return view('welcome');
 });
 
 // Add this route to check environment status
@@ -30,3 +36,8 @@ Route::get('/env-check', function () {
 });
 
 Route::resource('tasks', TaskController::class);
+
+// Fallback route for handling 404s
+Route::fallback(function () {
+    return response()->json(['error' => 'Not Found'], 404);
+});

@@ -14,6 +14,9 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+// Set storage path for Vercel environment
+$app->useStoragePath($_ENV['STORAGE_PATH'] ?? $app->storagePath());
+
 // Set up Vercel-specific configuration
 if (env('VERCEL_ENV')) {
     $app->useStoragePath('/tmp/storage');

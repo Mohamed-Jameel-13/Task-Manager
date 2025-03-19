@@ -1,22 +1,21 @@
 <?php
-// Force the correct MIME type for PHP execution
-header('Content-Type: text/html; charset=UTF-8');
 
-// Debug information
-if (isset($_ENV['APP_DEBUG']) && $_ENV['APP_DEBUG'] === 'true') {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-}
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Load composer autoloader
+require __DIR__ . '/../vendor/autoload.php';
 
 // Set up paths for Vercel environment
 $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/../public';
+chdir($_SERVER['DOCUMENT_ROOT']);
 
-// Ensure we have our temp directories
-$database_path = '/tmp/database.sqlite';
+// Create required directories
 $storage_path = '/tmp/storage';
 $bootstrap_path = '/tmp/bootstrap';
 
-// Create required directories
+// Create storage directories if they don't exist
 if (!file_exists($storage_path)) {
     mkdir($storage_path, 0777, true);
     mkdir($storage_path . '/app', 0777, true);
@@ -28,12 +27,14 @@ if (!file_exists($storage_path)) {
     mkdir($storage_path . '/logs', 0777, true);
 }
 
+// Create bootstrap cache directory
 if (!file_exists($bootstrap_path)) {
     mkdir($bootstrap_path, 0777, true);
     mkdir($bootstrap_path . '/cache', 0777, true);
 }
 
 // Create SQLite database if it doesn't exist
+$database_path = '/tmp/database.sqlite';
 if (!file_exists($database_path)) {
     touch($database_path);
     chmod($database_path, 0777);
@@ -73,7 +74,7 @@ if (!file_exists($database_path)) {
     }
 }
 
-// Set up environment paths
+// Set up Laravel environment paths
 $_ENV['STORAGE_PATH'] = $storage_path;
 $_SERVER['APP_BASE_PATH'] = dirname(__DIR__);
 
@@ -84,4 +85,12 @@ if (!file_exists($public_storage)) {
 }
 
 // Bootstrap Laravel
-require __DIR__ . '/../public/index.php';
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+
+// Get the kernel and handle the request
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
+$response->send();
+$kernel->terminate($request, $response);
