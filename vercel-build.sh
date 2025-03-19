@@ -4,16 +4,16 @@ set -e
 echo "Running build script..."
 
 # Download Composer
-curl -sS https://getcomposer.org/installer -o composer-setup.php
+# curl -sS https://getcomposer.org/installer -o composer-setup.php
 
 # Run the installer
-php composer-setup.php
+# php composer-setup.php
 
 # Move Composer to a globally accessible location
-mv composer.phar /usr/local/bin/composer
+# mv composer.phar /usr/local/bin/composer
 
 # Install dependencies
-composer install --no-dev --optimize-autoloader
+# composer install --no-dev --optimize-autoloader
 npm ci
 npm run build
 
@@ -44,15 +44,15 @@ if command -v sqlite3 &> /dev/null; then
     echo "Database initialized successfully"
     
     # Run Laravel migrations
-    echo "Running database migrations..."
-    php artisan migrate:fresh --force --no-interaction
+    # echo "Running database migrations..."
+    # php artisan migrate:fresh --force --no-interaction
 else
     echo "SQLite3 command not available, will initialize database at runtime"
 fi
 
 # Cache configuration for better performance
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# php artisan config:cache
+# php artisan route:cache
+# php artisan view:cache
 
 echo "Build completed successfully"
