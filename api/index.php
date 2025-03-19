@@ -1,5 +1,8 @@
 <?php
 
+// For Vercel, we need to set up the environment
+require __DIR__ . '/../public/vercel.php';
+
 // Set absolute paths for Vercel environment
 $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/../public';
 chdir($_SERVER['DOCUMENT_ROOT']);

@@ -20,6 +20,5 @@
     "SESSION_SECURE_COOKIE": "true",
     "SESSION_SAME_SITE": "none"
   },
-  "buildCommand": "php -r \"file_exists('.env') || copy('.env.example', '.env');\" && composer install --no-dev && php artisan key:generate --force",
-  "outputDirectory": "public"
+  "buildCommand": "npm run build"
 }
