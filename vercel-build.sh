@@ -23,4 +23,18 @@ chmod -R 777 /tmp/bootstrap
 echo "Running database migrations..."
 php artisan migrate --force --no-interaction
 
+# Install composer dependencies
+composer install --no-dev --optimize-autoloader
+
+# Generate application key if not set
+php artisan key:generate --force
+
+# Run migrations
+php artisan migrate --force
+
+# Cache configuration
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
 echo "Build process completed successfully"

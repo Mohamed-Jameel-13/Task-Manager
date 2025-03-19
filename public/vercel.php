@@ -68,3 +68,8 @@ if (!file_exists($public_storage)) {
 
 // Continue with normal application bootstrapping
 require __DIR__ . '/index.php';
+
+// This file is used by Vercel to route requests through the api/index.php handler
+
+// Delegate to normal index.php
+require __DIR__ . '/index.php';
