@@ -11,7 +11,6 @@ $app = new Illuminate\Foundation\Application(
 // Set up Vercel-specific configuration
 if (env('VERCEL_ENV')) {
     $app->useStoragePath('/tmp/storage');
-    $app->useCacheStoragePath('/tmp/bootstrap/cache');
 }
 
 return Application::configure(basePath: dirname(__DIR__))

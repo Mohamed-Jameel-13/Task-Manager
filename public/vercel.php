@@ -4,23 +4,40 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Database configuration for Vercel
+// Set up paths
 $database_path = '/tmp/database.sqlite';
 $storage_path = '/tmp/storage';
+$bootstrap_path = '/tmp/bootstrap';
 
-// Initialize database if it doesn't exist
+// Create required directories
+$storage_dirs = [
+    $storage_path . '/framework/cache',
+    $storage_path . '/framework/sessions',
+    $storage_path . '/framework/views',
+    $storage_path . '/logs',
+    $storage_path . '/app/public',
+    $bootstrap_path . '/cache'
+];
+
+foreach ($storage_dirs as $dir) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
+    }
+    chmod($dir, 0777);
+}
+
+// Initialize database if needed
 if (!file_exists($database_path)) {
     touch($database_path);
     chmod($database_path, 0777);
-
-    // Connect to SQLite and enable foreign keys
+    
     if (extension_loaded('pdo_sqlite')) {
         try {
             $pdo = new PDO('sqlite:' . $database_path);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->exec('PRAGMA foreign_keys = ON;');
             
-            // Create migrations table
+            // Create required tables
             $pdo->exec("
                 CREATE TABLE IF NOT EXISTS migrations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,27 +54,10 @@ if (!file_exists($database_path)) {
                     failed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             ");
-            echo "Database initialized successfully\n";
         } catch (Exception $e) {
-            echo "Database initialization error: " . $e->getMessage() . "\n";
+            error_log("Database initialization error: " . $e->getMessage());
         }
     }
-}
-
-// Create required directories
-$storage_dirs = [
-    $storage_path . '/framework/cache',
-    $storage_path . '/framework/sessions',
-    $storage_path . '/framework/views',
-    $storage_path . '/logs',
-    $storage_path . '/app/public'
-];
-
-foreach ($storage_dirs as $dir) {
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
-    }
-    chmod($dir, 0777);
 }
 
 // Set storage directory symlink

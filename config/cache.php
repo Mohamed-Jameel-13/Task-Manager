@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_STORE', 'array'),
+    'default' => env('CACHE_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +48,7 @@ return [
 
         'file' => [
             'driver' => 'file',
-            'path' => storage_path('framework/cache/data'),
+            'path' => env('VERCEL_ENV') ? '/tmp/storage/framework/cache' : storage_path('framework/cache/data'),
             'lock_path' => storage_path('framework/cache/data'),
         ],
 
