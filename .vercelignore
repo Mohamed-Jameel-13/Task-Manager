@@ -22,3 +22,5 @@ composer.lock
 package-lock.json
 *.log
 *.sqlite
+.idea
+.vscode

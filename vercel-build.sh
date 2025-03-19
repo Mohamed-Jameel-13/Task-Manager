@@ -1,7 +1,12 @@
 #!/bin/bash
-curl -sS https://getcomposer.org/installer | php
-php composer.phar install --no-dev --optimize-autoloader
-npm install && npm run build
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+
+# Install frontend dependencies and build assets
+npm install
+npm run build
+
+# Set up directories
+mkdir -p bootstrap/cache
+mkdir -p storage/framework/{sessions,views,cache}
+
+# Create storage symlink
+ln -s ../storage/app/public public/storage

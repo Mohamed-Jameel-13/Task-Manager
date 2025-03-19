@@ -8,9 +8,8 @@ if (isset($_ENV['APP_DEBUG']) && $_ENV['APP_DEBUG'] === 'true') {
     ini_set('display_errors', 1);
 }
 
-// Set up Laravel paths for Vercel's serverless environment
+// Set up paths for Vercel environment
 $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/../public';
-chdir($_SERVER['DOCUMENT_ROOT']);
 
 // Ensure we have our temp directories
 $database_path = '/tmp/database.sqlite';
@@ -74,15 +73,14 @@ if (!file_exists($database_path)) {
     }
 }
 
-// Set up Laravel environment variables
-$_SERVER['APP_BASE_PATH'] = dirname(__DIR__);
+// Set up environment paths
 $_ENV['STORAGE_PATH'] = $storage_path;
-$_ENV['DB_DATABASE'] = $database_path;
+$_SERVER['APP_BASE_PATH'] = dirname(__DIR__);
 
 // Create storage symlink if needed
 $public_storage = $_SERVER['DOCUMENT_ROOT'] . '/storage';
 if (!file_exists($public_storage)) {
-    @symlink($storage_path, $public_storage);
+    @symlink($storage_path . '/app/public', $public_storage);
 }
 
 // Bootstrap Laravel

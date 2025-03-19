@@ -27,15 +27,14 @@
         "APP_PACKAGES_CACHE": "/tmp/bootstrap/cache/packages.php",
         "APP_ROUTES_CACHE": "/tmp/bootstrap/cache/routes.php",
         "APP_SERVICES_CACHE": "/tmp/bootstrap/cache/services.php",
-        "VIEW_COMPILED_PATH": "/tmp/bootstrap/cache/views",
+        "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stack",
         "SESSION_DRIVER": "cookie",
-        "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
         "STORAGE_PATH": "/tmp/storage",
         "DB_CONNECTION": "pgsql",
         "FILESYSTEM_DISK": "local"
     },
-    "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh",
+    "buildCommand": "npm install && npm run build && composer install --prefer-dist --optimize-autoloader --no-dev",
     "outputDirectory": "public"
 }
