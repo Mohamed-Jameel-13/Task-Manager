@@ -19,7 +19,7 @@ if (!file_exists($database_path)) {
             $pdo = new PDO('sqlite:' . $database_path);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-            // Enable foreign keys before any operations
+            // Enable foreign keys
             $pdo->exec('PRAGMA foreign_keys = ON');
             
             // Create required tables
@@ -29,21 +29,13 @@ if (!file_exists($database_path)) {
                     migration VARCHAR NOT NULL,
                     batch INTEGER NOT NULL
                 );
-                CREATE TABLE IF NOT EXISTS failed_jobs (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    uuid VARCHAR NOT NULL UNIQUE,
-                    connection TEXT NOT NULL,
-                    queue TEXT NOT NULL,
-                    payload TEXT NOT NULL,
-                    exception TEXT NOT NULL,
-                    failed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
             ");
-            
-            // Verify the database is writable
-            $test = $pdo->query('SELECT 1');
-            if (!$test) {
-                error_log("Database created but not writable");
+
+            // Run migrations using artisan
+            chdir(dirname(__DIR__));
+            passthru('php artisan migrate --force --no-interaction 2>&1', $return_var);
+            if ($return_var !== 0) {
+                error_log("Migration failed with status: " . $return_var);
             }
         } catch (Exception $e) {
             error_log("Database initialization error: " . $e->getMessage());
