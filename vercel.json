@@ -20,5 +20,6 @@
     "SESSION_SECURE_COOKIE": "true",
     "SESSION_SAME_SITE": "none"
   },
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build",
+  "outputDirectory": "public"
 }
