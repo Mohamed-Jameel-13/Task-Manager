@@ -3,19 +3,20 @@
   "framework": null,
   "functions": {
     "api/index.php": {
-      "runtime": "vercel-php@0.6.0"
+      "runtime": "vercel-php@0.6.0",
+      "excludeFiles": "{public/**,resources/**}"
     }
   },
   "routes": [
     { "src": "/(css|js|images|fonts|favicon|build)/(.*)", "dest": "public/$1/$2" },
-    { "src": "/favicon.ico", "dest": "public/favicon.ico" },
-    { "src": "/robots.txt", "dest": "public/robots.txt" },
+    { "src": "/(favicon\\.ico|robots\\.txt)", "dest": "public/$1" },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "env": {
     "APP_NAME": "Task Manager",
     "APP_ENV": "production",
-    "APP_DEBUG": "false",
+    "APP_DEBUG": "true",
     "APP_URL": "https://task-manager-vercel.vercel.app",
     "APP_KEY": "base64:JT+DhYrz/heCTsLh5M5+5yMRO9b2zOgE+89p7Lrne9g=",
     "DB_CONNECTION": "sqlite",

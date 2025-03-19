@@ -1,4 +1,6 @@
 <?php
+// Explicitly set content type
+header("Content-Type: text/html; charset=utf-8");
 
 // For Vercel deployment
 error_reporting(E_ALL);
@@ -65,13 +67,20 @@ if (!file_exists($database_path)) {
                 );
             ");
         } catch (Exception $e) {
-            // Silent fail in production
+            // Log errors
             error_log("Database error: " . $e->getMessage());
         }
     }
 }
 
 // Important: Configure Laravel to use these paths
+putenv("DB_DATABASE={$database_path}");
+putenv("DB_CONNECTION=sqlite");
+putenv("CACHE_DRIVER=file");
+putenv("SESSION_DRIVER=cookie");
+putenv("VIEW_COMPILED_PATH={$bootstrap_path}/cache");
+putenv("STORAGE_PATH={$storage_path}");
+
 $_ENV['DB_DATABASE'] = $database_path;
 $_ENV['DB_CONNECTION'] = 'sqlite';
 $_ENV['CACHE_DRIVER'] = 'file';
