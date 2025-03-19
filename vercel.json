@@ -1,0 +1,41 @@
+{
+    "version": 2,
+    "functions": {
+        "api/*.php": {
+            "runtime": "vercel-php@0.6.0",
+            "memory": 1024,
+            "maxDuration": 60
+        }
+    },
+    "routes": [
+        {
+            "src": "/(css|js|images|fonts|favicon.ico|robots.txt)/(.*)",
+            "dest": "public/$1/$2"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_NAME": "Laravel",
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
+        "APP_URL": "${VERCEL_URL}",
+        "APP_CONFIG_CACHE": "/tmp/bootstrap/cache/config.php",
+        "APP_EVENTS_CACHE": "/tmp/bootstrap/cache/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/bootstrap/cache/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/bootstrap/cache/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/bootstrap/cache/services.php",
+        "VIEW_COMPILED_PATH": "/tmp/bootstrap/cache/views",
+        "CACHE_DRIVER": "array",
+        "LOG_CHANNEL": "stack",
+        "SESSION_DRIVER": "cookie",
+        "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
+        "STORAGE_PATH": "/tmp/storage",
+        "DB_CONNECTION": "pgsql",
+        "FILESYSTEM_DISK": "local"
+    },
+    "buildCommand": "npm install && npm run build && composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache",
+    "outputDirectory": "public"
+}

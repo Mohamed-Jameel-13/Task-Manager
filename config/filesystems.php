@@ -32,19 +32,16 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => env('VERCEL_ENV') ? '/tmp/storage/app/private' : storage_path('app/private'),
-            'serve' => true,
+            'root' => env('STORAGE_PATH', storage_path('app')),
             'throw' => false,
-            'report' => false,
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => env('VERCEL_ENV') ? '/tmp/storage/app/public' : storage_path('app/public'),
+            'root' => env('STORAGE_PATH', storage_path('app/public')),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
-            'report' => false,
         ],
 
         's3' => [
@@ -57,7 +54,6 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
-            'report' => false,
         ],
 
     ],
@@ -74,7 +70,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => env('VERCEL_ENV') ? '/tmp/storage/app/public' : storage_path('app/public'),
+        public_path('storage') => env('STORAGE_PATH', storage_path('app/public')),
     ],
 
 ];
