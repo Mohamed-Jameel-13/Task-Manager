@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "curl -sS https://getcomposer.org/installer | php && php composer.phar install --no-dev --optimize-autoloader && npm ci && npm run build",
+    "buildCommand": "npm ci && npm run build",
     "outputDirectory": "public",
     "framework": null,
     "functions": {
@@ -35,7 +35,8 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
         "STORAGE_PATH": "/tmp/storage",
-        "DB_CONNECTION": "pgsql",
-        "FILESYSTEM_DISK": "local"
+        "DB_CONNECTION": "sqlite",
+        "FILESYSTEM_DISK": "local",
+        "VERCEL_ENV": "production"
     }
 }

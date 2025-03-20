@@ -4,11 +4,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Load composer autoloader
-require __DIR__ . '/../vendor/autoload.php';
-
-// Set up paths for Vercel environment
+// Set up base paths
 $_SERVER['DOCUMENT_ROOT'] = __DIR__ . '/../public';
+$_SERVER['APP_BASE_PATH'] = dirname(__DIR__);
 chdir($_SERVER['DOCUMENT_ROOT']);
 
 // Create required directories
@@ -76,13 +74,15 @@ if (!file_exists($database_path)) {
 
 // Set up Laravel environment paths
 $_ENV['STORAGE_PATH'] = $storage_path;
-$_SERVER['APP_BASE_PATH'] = dirname(__DIR__);
 
 // Create storage symlink if needed
 $public_storage = $_SERVER['DOCUMENT_ROOT'] . '/storage';
 if (!file_exists($public_storage)) {
     @symlink($storage_path . '/app/public', $public_storage);
 }
+
+// Load Composer's autoloader
+require __DIR__ . '/../vendor/autoload.php';
 
 // Bootstrap Laravel
 $app = require_once __DIR__ . '/../bootstrap/app.php';

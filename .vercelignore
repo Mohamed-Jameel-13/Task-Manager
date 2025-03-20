@@ -10,17 +10,6 @@
 /storage/framework/testing/*
 /storage/framework/views/*
 .phpunit.result.cache
-/bootstrap/cache/*
-.editorconfig
-.gitattributes
-.gitignore
-.styleci.yml
 docker-compose.yml
 phpunit.xml
-README.md
-composer.lock
-package-lock.json
 *.log
-*.sqlite
-.idea
-.vscode
